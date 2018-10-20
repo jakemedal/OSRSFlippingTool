@@ -4,7 +4,7 @@ package osrs.flipping.tool;
 
 public class GEItem {
     private String name;
-    private int id,buyAvg,sellAvg,storePrice;
+    private int id, buyAvg, sellAvg, storePrice;
     private boolean members;
     
     public GEItem(String name, int id, int buyAvg, int sellAvg,int storePrice,boolean members){
@@ -49,5 +49,4 @@ public class GEItem {
         return (int)(((sell-buy)/buy)*100);
     }
     
-    //getGEGraphData(){} ?
 }
