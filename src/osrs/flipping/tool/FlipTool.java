@@ -18,7 +18,7 @@ public class FlipTool {
     private int proxyPort;
     private boolean useProxy;
     
-    public FlipTool(){
+    FlipTool(){
         useProxy = false;
     }
     
@@ -26,6 +26,40 @@ public class FlipTool {
         this.proxyAddress = proxyAddress;
         this.proxyPort = proxyPort;
         useProxy = true;
+    }
+
+    public List<GEItem> generateFlipList(int maxItemPrice, int minPercentMargin) {
+
+        List<GEItem> result = new ArrayList<>();
+        JSONObject itemSummary = getItemList(API_HOST_URL, useProxy);
+        
+        for(String itemId : itemSummary.keySet()){
+            JSONObject item = itemSummary.getJSONObject(itemId);
+          
+            int sellAverage = item.getInt("sell_average");
+            int buyAverage = item.getInt("buy_average");
+            int diff = Math.abs(sellAverage - buyAverage);
+            double profitPercent;
+            
+            if(buyAverage <= maxItemPrice){
+                
+                profitPercent = (buyAverage > 0) ? (diff/buyAverage) * 100 : -1;
+                
+                if(profitPercent >= minPercentMargin){
+                    GEItem geitem = new GEItem(item.getString("name"),
+                                               item.getInt("id"),
+                                               buyAverage,
+                                               sellAverage,
+                                               item.getInt("sp"),
+                                               item.getBoolean("members"));
+                    
+                    result.add(geitem);
+                
+                }
+            }
+        }
+        
+        return result;
     }
 
     private JSONObject getItemList(String urlString, boolean useProxy) {
@@ -71,38 +105,5 @@ public class FlipTool {
         return (HttpURLConnection)url.openConnection(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyAddress, proxyPort)));
     }
 
-    public List<GEItem> generateFlipList(int maxItemPrice, int minPercentMargin) throws Exception{
 
-        List<GEItem> result = new ArrayList<>();
-        JSONObject itemSummary = getItemList(API_HOST_URL, useProxy);
-        
-        for(String itemId : itemSummary.keySet()){
-            JSONObject item = itemSummary.getJSONObject(itemId);
-          
-            int sellAverage = item.getInt("sell_average");
-            int buyAverage = item.getInt("buy_average");
-            int diff = Math.abs(sellAverage - buyAverage);
-            double profitPercent;
-            
-            if(buyAverage <= maxItemPrice){
-                
-                profitPercent = (buyAverage > 0) ? (diff/buyAverage) * 100 : -1;
-                
-                if(profitPercent >= minPercentMargin){
-                    GEItem geitem = new GEItem(item.getString("name"),
-                                               item.getInt("id"),
-                                               buyAverage,
-                                               sellAverage,
-                                               item.getInt("sp"),
-                                               item.getBoolean("members"));
-                    
-                    result.add(geitem);
-                
-                }
-            }
-        }
-        
-        return result;
-    }
-    
 }

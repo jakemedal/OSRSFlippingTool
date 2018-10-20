@@ -8,9 +8,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
@@ -21,6 +21,8 @@ public class OSRS_Flipping_Tool_GUI extends javax.swing.JFrame {
     
 	private final int MAX_GP_AMOUNT = 2147483647;
 	private final int MIN_PROFIT_DEFAULT = 0;
+
+	private final FlipTool flipTool = new FlipTool();
 	
     /**
      * Creates new form OSRS_Flipping_Tool_GUI
@@ -178,9 +180,6 @@ public class OSRS_Flipping_Tool_GUI extends javax.swing.JFrame {
     //if they press the button
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
-        //create instance of FlipTool class (where all the logic is)
-        FlipTool fliptool = new FlipTool();
-        
         //declare List that results will be stored in
         List<GEItem> flipList;
         
@@ -206,7 +205,7 @@ public class OSRS_Flipping_Tool_GUI extends javax.swing.JFrame {
         	}
         	
             //generate fliplist
-            flipList = fliptool.generateFlipList(maxPrice,minProfit);
+            flipList = flipTool.generateFlipList(maxPrice,minProfit);
             
             //loop through items and add to table model
             for(GEItem item : flipList){
@@ -255,14 +254,9 @@ public class OSRS_Flipping_Tool_GUI extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(OSRS_Flipping_Tool_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(OSRS_Flipping_Tool_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(OSRS_Flipping_Tool_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(OSRS_Flipping_Tool_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(OSRS_Flipping_Tool_GUI.class.getName()).
+                    log(java.util.logging.Level.SEVERE, "Unable to set the Nimbus look and feel. Launching with default look and feel.", ex);
         }
         //</editor-fold>
 
