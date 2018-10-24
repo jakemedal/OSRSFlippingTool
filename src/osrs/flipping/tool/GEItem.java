@@ -1,7 +1,5 @@
 package osrs.flipping.tool;
 
-import lombok.Data;
-
 class GEItem {
     private String name;
     private int id;

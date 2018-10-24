@@ -38,14 +38,11 @@ public class FlipTool {
           
             int sellAverage = item.getInt("sell_average");
             int buyAverage = item.getInt("buy_average");
-            int diff = Math.abs(sellAverage - buyAverage);
-            double profitPercent;
-            
-            if(buyAverage <= maxItemPrice){
+
+            if (buyAverage <= maxItemPrice) {
+                double profitPercent = getProfitPercent(buyAverage, sellAverage);
                 
-                profitPercent = (buyAverage > 0) ? (diff/buyAverage) * 100 : -1;
-                
-                if(profitPercent >= minPercentMargin){
+                if (profitPercent >= minPercentMargin) {
                     GEItem geitem = new GEItem(item.getString("name"),
                                                item.getInt("id"),
                                                buyAverage,
@@ -60,6 +57,12 @@ public class FlipTool {
         }
         
         return result;
+    }
+
+    private int getProfitPercent(int buyAverage, int sellAverage) {
+        return (buyAverage > 0)
+                ? (Math.abs(sellAverage - buyAverage)/buyAverage) * 100
+                : -1;
     }
 
     private JSONObject getItemList(String urlString, boolean useProxy) {
