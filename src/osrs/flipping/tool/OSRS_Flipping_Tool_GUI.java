@@ -18,9 +18,9 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public class OSRS_Flipping_Tool_GUI extends javax.swing.JFrame {
-    
-	private final int MAX_GP_AMOUNT = 2147483647;
-	private final int MIN_PROFIT_DEFAULT = 0;
+
+	private static final int MAX_GP_AMOUNT = 2147483647;
+	private static final int MIN_PROFIT_DEFAULT = 0;
 
 	private final FlipTool flipTool = new FlipTool();
 	
@@ -32,7 +32,7 @@ public class OSRS_Flipping_Tool_GUI extends javax.swing.JFrame {
     }
 
     //this is the table model where we hold the results
-    DefaultTableModel resultsModel = new javax.swing.table.DefaultTableModel(
+    private DefaultTableModel resultsModel = new javax.swing.table.DefaultTableModel(
                                         new Object [][] {
 
                                         },
@@ -180,18 +180,13 @@ public class OSRS_Flipping_Tool_GUI extends javax.swing.JFrame {
     //if they press the button
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
-        //declare List that results will be stored in
         List<GEItem> flipList;
-        
-        //clear table
         resultsModel.setRowCount(0);
         
     	int maxPrice;
     	int minProfit;
         
-        //try new search
         try{
-            //get criteria from fields
         	String maxPriceString = jTextField1.getText();
         	String minProfitString = jTextField2.getText();
         	
@@ -203,19 +198,16 @@ public class OSRS_Flipping_Tool_GUI extends javax.swing.JFrame {
         	} else {
             	minProfit = Integer.parseInt(minProfitString);
         	}
-        	
-            //generate fliplist
+
             flipList = flipTool.generateFlipList(maxPrice,minProfit);
             
-            //loop through items and add to table model
             for(GEItem item : flipList){
                 resultsModel.addRow(new Object[]{item.getName(),item.getId(),item.getBuyAvg(),item.getSellAvg(),item.getProfitGP(),item.getProfitPercent(),item.getStorePrice(),item.isMembers()});
             }
         }catch(NumberFormatException e){
-            JOptionPane.showMessageDialog(null, "Ya dun goofed... Invalid input.");
-        	
+            JOptionPane.showMessageDialog(null, "Invalid input.");
+
         }catch(Exception e) {
-        	// Show default messages for all other errors
             JOptionPane.showMessageDialog(null,e.toString());
         }
         
