@@ -37,14 +37,14 @@ public class OSRS_Flipping_Tool_GUI extends javax.swing.JFrame {
 
                                         },
                                         new String [] {
-                                            "Name", "ID", "Avg Buy Price (GP)", "Avg Sell Price (GP)", "Profit per Item (GP)", "Profit per Item (%)", "Store Price (GP)", "Members"
+                                            "Name", "ID", "Avg Buy Price (GP)", "Avg Sell Price (GP)", "Buy Quantity", "Sell Quantity", "Profit per Item (GP)", "Profit per Item (%)", "Potential Profit", "Members"
                                         }
                                     ){
                                         Class[] types = new Class [] {
-                                            java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Boolean.class
+                                            String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Boolean.class
                                         };
                                         boolean[] canEdit = new boolean [] {
-                                            false, false, false, false, false, false, false, false
+                                            false, false, false, false, false, false, false, false, false
                                         };
 
                                         public Class getColumnClass(int columnIndex) {
@@ -123,7 +123,7 @@ public class OSRS_Flipping_Tool_GUI extends javax.swing.JFrame {
         jTable1.setRowSorter(sorter);
 
         List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
-        sortKeys.add(new RowSorter.SortKey(7, SortOrder.ASCENDING));
+        sortKeys.add(new RowSorter.SortKey(9, SortOrder.ASCENDING));
         sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
         sorter.setSortKeys(sortKeys);
         // --------------------------------------
@@ -202,7 +202,18 @@ public class OSRS_Flipping_Tool_GUI extends javax.swing.JFrame {
             flipList = flipTool.generateFlipList(maxPrice,minProfit);
             
             for(GEItem item : flipList){
-                resultsModel.addRow(new Object[]{item.getName(),item.getId(),item.getBuyAvg(),item.getSellAvg(),item.getProfitGP(),item.getProfitPercent(),item.getStorePrice(),item.isMembers()});
+                resultsModel.addRow(new Object[]{
+                        item.getName(),
+                        item.getId(),
+                        item.getBuyAvg(),
+                        item.getSellAvg(),
+                        item.getBuyQuantity(),
+                        item.getSellQuantity(),
+                        item.getProfitGP(),
+                        item.getProfitPercent(),
+                        item.getPotentialProfit(),
+                        item.isMembers()
+                });
             }
         }catch(NumberFormatException e){
             JOptionPane.showMessageDialog(null, "Invalid input.");

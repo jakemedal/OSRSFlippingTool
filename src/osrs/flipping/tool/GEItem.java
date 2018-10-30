@@ -5,16 +5,22 @@ class GEItem {
     private int id;
     private int buyAvg;
     private int sellAvg;
-    private int storePrice;
+    private int buyQuantity;
+    private int sellQuantity;
     private boolean members;
     
-    GEItem(String name, int id, int buyAvg, int sellAvg, int storePrice, boolean members) {
+    GEItem(String name,
+           int id,
+           int buyAvg, int sellAvg,
+           int buyQuantity, int sellQuantity,
+           boolean members) {
         this.name = name;
         this.id = id;
         this.buyAvg = buyAvg;
         this.sellAvg = sellAvg;
-        this.storePrice = storePrice;
-        this.members=members;
+        this.buyQuantity = buyQuantity;
+        this.sellQuantity = sellQuantity;
+        this.members = members;
     }
 
     public String getName() {
@@ -49,12 +55,20 @@ class GEItem {
         this.sellAvg = sellAvg;
     }
 
-    public int getStorePrice() {
-        return storePrice;
+    public int getBuyQuantity() {
+        return buyQuantity;
     }
 
-    public void setStorePrice(int storePrice) {
-        this.storePrice = storePrice;
+    public void setBuyQuantity(int buyQuantity) {
+        this.buyQuantity = buyQuantity;
+    }
+
+    public int getSellQuantity() {
+        return sellQuantity;
+    }
+
+    public void setSellQuantity(int sellQuantity) {
+        this.sellQuantity = sellQuantity;
     }
 
     public boolean isMembers() {
@@ -70,8 +84,13 @@ class GEItem {
     }
     
     int getProfitPercent(){
-        double buy=buyAvg,sell=sellAvg;
+        double buy = buyAvg;
+        double sell = sellAvg;
         return (int)(((sell-buy)/buy)*100);
+    }
+
+    int getPotentialProfit(){
+        return Math.max(buyQuantity, sellQuantity) * this.getProfitGP();
     }
     
 }

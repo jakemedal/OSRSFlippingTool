@@ -35,9 +35,11 @@ public class FlipTool {
         
         for(String itemId : itemSummary.keySet()){
             JSONObject item = itemSummary.getJSONObject(itemId);
-          
-            int sellAverage = item.getInt("sell_average");
+
             int buyAverage = item.getInt("buy_average");
+            int sellAverage = item.getInt("sell_average");
+            int buyQuantity = item.getInt("buy_quantity");
+            int sellQuantity = item.getInt("sell_quantity");
 
             if (buyAverage <= maxItemPrice) {
                 double profitPercent = getProfitPercent(buyAverage, sellAverage);
@@ -47,7 +49,8 @@ public class FlipTool {
                                                item.getInt("id"),
                                                buyAverage,
                                                sellAverage,
-                                               item.getInt("sp"),
+                                               buyQuantity,
+                                               sellQuantity,
                                                item.getBoolean("members"));
                     
                     result.add(geitem);
